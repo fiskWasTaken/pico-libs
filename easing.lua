@@ -1,7 +1,7 @@
 -- some easing functions inspired from http://gizma.com/easing/
 -- t: current time
 -- b: start value
--- c: end value
+-- c: change in value
 -- d: duration
 
 ease={}

@@ -6,6 +6,9 @@ cute={
     vis=0,
     -- current frame
     frame={},
+    -- max text width
+    width=25,
+    rows=2,
     -- autoplay interval delay
     autoplay_interval=60
 }
@@ -72,6 +75,14 @@ function cute:cinematic(label)
     end
 end
 
+function slice(arr,start,fin)
+ local out={}
+ for i=start,fin do
+    add(out,arr[i])
+ end
+ return out
+end
+
 -- cute dialogue
 function cute:d(a,m,auto)
     -- todo: resolve actor
@@ -87,10 +98,8 @@ function cute:d(a,m,auto)
         ⧗=0
     }
 
-    local rows=2
     local row=1
-    local twidth=25
-    local lines=split(m,twidth)
+    local lines=split(m,self.width)
     local progress=0
     local autoplay_timeout=self.autoplay_interval
 
@@ -102,9 +111,9 @@ function cute:d(a,m,auto)
     local speed=0.4
 
     repeat
-        local text=join({lines[row],lines[row+1]},"\n")
+        local text=join(slice(lines,row,row+self.rows-1),"\n")
 
-        frame.⬇️=row+rows-1<#lines
+        frame.⬇️=row+self.rows-1<#lines
         frame.⧗+=1
         frame.m=sub(text,0,progress)
         self.frame=frame
@@ -124,7 +133,11 @@ function cute:d(a,m,auto)
         elseif btnp(❎) then
             if progress>=#text then
                 row+=1
-                progress=#lines[row]
+                progress=0
+                for i=row,row+self.rows-2 do
+                 if (lines[i]) progress+=#lines[i]
+                end
+                printh("???")
             else
                 progress=#text
             end
@@ -139,72 +152,13 @@ function cute:d(a,m,auto)
 
             progress+=speed*mult
         end
-    until row>=#lines
+    until row>#lines-1
 
     printh("dialogue event completed: "..m)
 end
 
 function cute:play(func)
     cute.co=cocreate(func)
-end
-
--- draw frame
-function cute:draw_frame()
-    local frame=self.frame
-
-    -- y position
-    -- we start low enough that the frame
-    -- transitions without any elements
-    -- popping into view too soon
-    local oy=100+(1-self.vis)*36
-    local top_bar=self.vis*16
-
-    -- draw nothing if we are too far
-    -- off screen
-    if (oy>130) return
-
-    rectfill(0,0,128,top_bar,0)
-    line(0,top_bar,128,top_bar,7)
-
-    rectfill(0,oy+4,128,128,0)
-    line(0,oy+4,128,oy+4,7)
-
-    if frame.a then
-        -- actor name
-        local nw=#frame.a.name*4
-        rectfill(2,oy,nw+4,oy+8,0)
-        rect(2,oy,nw+4,oy+8,7)
-        print(frame.a.name,4,oy+2,frame.a.color)
-
-        if frame.a.spr then
-            local x,y=108,oy-4
-            rectfill(x,y,x+18,y+18,0)
-            rect(x,y,x+18,y+18,7)
-            frame.a.spr(x+1,y+1)
-        end
-    end
-
-    if frame.m then
-        -- text
-        print(frame.m,2,oy+11,7)
-    end
-
-    local shake=0
-
-    if frame.⧗ then
-        shake=(frame.⧗/30)%2
-    end
-
-    local button,c="❎",7
-
-    -- if more text, show ⬇️
-    -- otherwise show ❎
-    if frame.⬇️ then
-        button,c="⬇️",12
-    end
-
-    print(button,120,oy+20+shake,c)
-    self.frame=frame
 end
 
 -- ease functions from easing.lua

@@ -18,11 +18,7 @@ cute={
 function cute:draw()
     if self.co then
         if costatus(self.co)=="dead" then
-            -- unset if a cutscene
-            -- is not being played,
-            -- allowing games to
-            -- test if a cutscene
-            -- is currently active
+            -- gc
             self.co=nil
         else
             coresume(self.co)
@@ -54,21 +50,16 @@ end
 -- provide
 -- enter/leave transitions
 function cute:cinematic(label)
-    local enter=cocreate(cute.slide_in)
-    local leave=cocreate(cute.slide_out)
     local func=cocreate(label)
 
-    -- calling once draws the first
-    -- cutscene frame before doing anim
+    -- buffer first cutscene frame
     coresume(func)
 
-    local list={
-        enter,
-        func,
-        leave
-    }
-
-    for co in all(list) do
+    for co in all({
+     cocreate(cute.slide_in),
+     func,
+     cocreate(cute.slide_out)
+    }) do
         repeat
             yield(coresume(co))
         until costatus(co)=="dead"
@@ -85,9 +76,7 @@ end
 
 -- cute dialogue
 function cute:d(a,m,auto)
-    -- todo: resolve actor
-    -- could be string, object..
-
+    -- todo: should not be up to cute to handle actor
     if type(a)=="string" then
         a={name=a,color=7}
     end

@@ -99,21 +99,20 @@ function cute:d(a,m,auto)
     }
 
     local row=1
-    local lines=split(m,self.width)
+    local lines=wrap(m,self.width)
     local progress=0
     local autoplay_timeout=self.autoplay_interval
-
-    -- workaround for bug where a single line of
-    -- text is skipped, fix this...
-    if (#lines==1) add(lines,"")
 
     -- typewriter speed
     local speed=0.4
 
+    local trow=#lines-self.rows+2
+    if (#lines<=3) trow=2
+
     repeat
         local text=join(slice(lines,row,row+self.rows-1),"\n")
 
-        frame.⬇️=row+self.rows-1<#lines
+        frame.⬇️=row+1<trow
         frame.⧗+=1
         frame.m=sub(text,0,progress)
         self.frame=frame
@@ -137,7 +136,6 @@ function cute:d(a,m,auto)
                 for i=row,row+self.rows-2 do
                  if (lines[i]) progress+=#lines[i]
                 end
-                printh("???")
             else
                 progress=#text
             end
@@ -152,9 +150,7 @@ function cute:d(a,m,auto)
 
             progress+=speed*mult
         end
-    until row>#lines-1
-
-    printh("dialogue event completed: "..m)
+    until row>=trow
 end
 
 function cute:play(func)
@@ -179,36 +175,28 @@ end
 
 -- join an array of strings per the delimiter
 function join(strings,delimiter)
-				local ret=""
+    local ret=""
 
-				for l in all(strings) do
-	 	 	 	 if ret=="" then
-	  	  	  	  ret=l
-	 	 	 	 else
- 	  	  	  	 ret=ret..delimiter..l
-	 	 	 	 end
-				end
+    for l in all(strings) do
+     if ret=="" then
+      ret=l
+     else
+     ret=ret..delimiter..l
+     end
+    end
 
     return ret
 end
 
--- split a string into an array
--- of lines based on position
--- of spacing characters
--- todo: transform
--- into cursor-oriented
--- coroutine for memory
--- efficiency?
-function split(str,w)
+-- soft wrap a string, split
+-- by space
+function wrap(str,w)
     local out,from,len={},1,#str
 
     repeat
         local to=min(from+w,len)
 
         if to<len then
-            -- look ahead to width and
-            -- backtrack until we
-            -- see a space
             for c=min(to,len),from,-1 do
                 if sub(str,c,c)==" " then
                     to=c
@@ -217,12 +205,7 @@ function split(str,w)
             end
         end
 
-        add(out,sub(
-            str,
-            from,
-            to
-        ))
-
+        add(out,sub(str,from,to))
         from=to+1
     until to>=len
 

@@ -106,8 +106,7 @@ function cute:d(a,m,auto)
     -- typewriter speed
     local speed=0.4
 
-    local trow=#lines-self.rows+2
-    if (#lines<=3) trow=2
+    local trow=max(#lines-self.rows+2,2)
 
     repeat
         local text=join(slice(lines,row,row+self.rows-1),"\n")

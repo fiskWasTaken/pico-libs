@@ -18,15 +18,13 @@ cute is split over several files so you only need to include what you need. You 
 function _update()
  if (cute.co) return
  -- existing _update() logic...
- if (btnp(2)) start_cutscene()
+ if (btnp(2)) cute:cinematic(start_cutscene())
 end
 
-function start_cutscene()
- cute:cinematic(function()
-  a={name="fisk",color=11}
-  cute:d(a,"hey, you!!")
-  cute:d(a,"this is a cutscene!")
- end)
+function cutscene()
+ a={name="fisk",color=11}
+ cute:d(a,"hey, you!!")
+ cute:d(a,"this is a cutscene!")
 end
 
 function _draw()

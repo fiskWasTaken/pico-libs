@@ -17,11 +17,11 @@ cute.handlers.dialogue=function(frame)
    end
   end
 
-  if (frame.m) print(frame.m,2,oy+11,7)
-
   local button,c="❎",7
   if (frame.⬇️) button,c="⬇️",12
 
   local shake=(frame.⧗/30)%2
+
+  print(frame.m,2,oy+11,7)
   print(button,120,oy+20+shake,c)
 end

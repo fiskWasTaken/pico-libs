@@ -45,3 +45,8 @@ function cinematic(label)
   end
  end
 end
+
+-- convenience wrapper
+function cute:cinematic(label)
+ cute:play(function() cinematic(label) end)
+end

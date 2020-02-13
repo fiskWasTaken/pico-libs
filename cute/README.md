@@ -22,12 +22,10 @@ function _update()
 end
 
 function start_cutscene()
- cute:play(function()
+ cute:cinematic(function()
   a={name="fisk",color=11}
-  cinematic(function()
-   cute:d(a,"hey, you!!")
-   cute:d(a,"this is a cutscene!")
-  end)
+  cute:d(a,"hey, you!!")
+  cute:d(a,"this is a cutscene!")
  end)
 end
 

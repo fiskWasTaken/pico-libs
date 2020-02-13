@@ -9,8 +9,6 @@ cute={
  -- max text width
  width=25,
  rows=2,
- -- autoplay interval delay
- autoplay_interval=60,
  -- target y offset at full vis
  target_oy=92,
  handlers={}

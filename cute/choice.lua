@@ -13,6 +13,9 @@ function cute:c(d,prompt,choices)
   yield()
   if (btnp(⬅️)) f.choice=(f.choice-2)%#choices+1
   if (btnp(➡️)) f.choice=f.choice%#choices+1
-  if (btnp(❎)) return f.choice
+  if (btnp(❎)) then
+   if (self.on_step) self:on_step()
+   return f.choice
+  end
  until false
 end

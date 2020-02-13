@@ -1,5 +1,5 @@
 -- cute dialogue
-function cute:d(data,m,auto)
+function cute:d(data,m)
  local frame={
   data=data,
   type='dialogue',
@@ -10,11 +10,7 @@ function cute:d(data,m,auto)
  local row=1
  local lines=wrap(m,self.width)
  local progress=0
- local autoplay_timeout=self.autoplay_interval
-
- -- typewriter speed
  local speed=0.4
-
  local trow=max(#lines-self.rows+2,2)
 
  repeat
@@ -26,18 +22,7 @@ function cute:d(data,m,auto)
   self.frame=frame
   yield()
 
-  if auto then
-   autoplay_timeout-=1
-
-   if autoplay_timeout==0 then
-    if progress>=#text then
-     row+=1
-     progress=#lines[row]
-    end
-
-    autoplay_timeout=self.autoplay_interval
-   end
-  elseif btnp(❎) then
+  if btnp(❎) then
    if progress>=#text then
     row+=1
     progress=0

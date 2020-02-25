@@ -1,7 +1,7 @@
 -- cute dialogue
-function cute:d(data,m)
+function cute:d(d,m)
  local frame={
-  data=data,
+  data=d,
   type='dialogue',
   ⬇️=false,
   ⧗=0

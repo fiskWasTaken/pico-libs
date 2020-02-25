@@ -1,4 +1,4 @@
-function ctor(self,o)
-	self.__index=self
-	return setmetatable(o or {},self)
+function ctor(s,o)
+	s.__index=s
+	return setmetatable(o or {},s)
 end

@@ -1,3 +1,9 @@
+function cute:da(d,a)
+ for m in all(a) do
+    cute:d(d,m)
+ end
+end
+
 -- cute dialogue
 function cute:d(d,m)
  local frame={

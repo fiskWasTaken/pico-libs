@@ -1,78 +1,72 @@
 function cute:da(d,a)
  for m in all(a) do
-    cute:d(d,m)
+  cute:d(d,m)
  end
 end
 
--- cute dialogue
 function cute:d(d,m)
- local frame={
-  data=d,
-  type='dialogue',
+ local f={
+  d=d,
+  t='dialogue',
   ⬇️=false,
   ⧗=0
  }
 
- local row=1
- local lines=wrap(m,self.width)
- local progress=0
- local speed=0.4
+ local row,prog,spd=1,0,0.4
+ local lines=wrap(m,self.w)
  local trow=max(#lines-self.rows+2,2)
 
  repeat
   local text=join(slice(lines,row,row+self.rows-1),"\n")
 
-  frame.⬇️=row+1<trow
-  frame.⧗+=1
-  frame.m=sub(text,0,progress)
-  self.frame=frame
+  f.⬇️=row+1<trow
+  f.⧗+=1
+  f.m=sub(text,0,prog)
+  self.f=f
   yield()
 
   if btnp(❎) then
-   if progress>=#text then
+   if prog>=#text then
     row+=1
-    progress=0
+    prog=0
     for i=row,row+self.rows-2 do
-     if (lines[i]) progress+=#lines[i]
+     if (lines[i]) prog+=#lines[i]
     end
    else
-    progress=#text
+    prog=#text
    end
   end
 
-  if progress<#text then
+  if prog<#text then
    mult=(btn(❎)) and 2 or 1
-   progress+=speed*mult
-   if (self.on_progress) self:on_progress()
+   prog+=spd*mult
+   if (self.progress) self:progress()
   end
  until row>=trow
 
- if (self.on_step) self:on_step()
+ if (self.step) self:step()
 end
 
-function slice(arr,start,fin)
- local out={}
- for i=start,fin do
- add(out,arr[i])
+function slice(a,s,f)
+ local o={}
+ for i=s,f do
+  add(o,a[i])
  end
- return out
+ return o
 end
 
--- join an array of strings per the delimiter
-function join(strings,delim)
- local ret=""
-
- for l in all(strings) do
-  ret=ret=="" and l or ret..delim..l
+function join(s,d)
+ local o=""
+ for l in all(s) do
+  o=o=="" and l or o..d..l
  end
-
- return ret
+ return o
 end
 
 -- soft wrap a string, split
 -- by space
 function wrap(str,w)
- local out,from,len={},1,#str
+ local o,from,len={},1,#str
 
  repeat
   local to=min(from+w,len)
@@ -86,9 +80,9 @@ function wrap(str,w)
    end
   end
 
-  add(out,sub(str,from,to))
+  add(o,sub(str,from,to))
   from=to+1
  until to>=len
 
- return out
+ return o
 end

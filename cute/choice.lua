@@ -1,20 +1,20 @@
 
 function cute:c(d,prompt,choices)
  local f={
-  data=d,
+  d=d,
   choices=choices,
   prompt=prompt,
-  type='choice',
+  t='choice',
   choice=1
  }
 
  repeat
-  self.frame=f
+  self.f=f
   yield()
   if (btnp(⬅️)) f.choice=(f.choice-2)%#choices+1
   if (btnp(➡️)) f.choice=f.choice%#choices+1
   if (btnp(❎)) then
-   if (self.on_step) self:on_step()
+   if (self.step) self:step()
    return f.choice
   end
  until false

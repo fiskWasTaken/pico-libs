@@ -1,27 +1,27 @@
 function cute:t(d,prompt,len)
- i=""
  len=len or 32
-
- local cursor=1
+ local chars="abcdefghijklmnopqrstuvwxyz1234567890 "
 
  local f={
-  data=d,
-  input=i,
+  d=d,
+  input="",
   prompt=prompt,
-  type='text',
-  cursor=cursor
+  t='text',
+  c=1,
+  char=1
  }
 
  repeat
-  self.frame=f
+  self.f=f
   yield()
 
-  if btnp(⬇️) then
-   break
-  end
+  if (btnp(⬅️)) f.c=max(1,f.c-1)
+  if (btnp(➡️)) f.c=min(len,f.c+1)
+  if (btnp(⬇️)) f.char=(f.char-2)%#chars+1
+  if (btnp(⬆️)) f.char=f.char%#chars+1
 
-  f.input=i
- until false
+  f.input=sub(f.input,1,f.c-1)..sub(chars,f.char,f.char)..sub(f.input,f.c+1,-1)
+ until btnp(❎)
 
  return i
 end

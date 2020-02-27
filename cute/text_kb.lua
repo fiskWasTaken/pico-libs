@@ -1,21 +1,20 @@
 function cute:t_kb(d,prompt,len)
  poke(24365,1)
- i=""
- len=len or 32
+ i,len="",len or 32
 
  local f={
-  data=d,
+  d=d,
   input=i,
   prompt=prompt,
-  type='text',
-  cursor=1
+  t='text',
+  c=1
  }
 
  -- clear input buffer
  while stat(30) do stat(31) end
 
  repeat
-  self.frame=f
+  self.f=f
   yield()
 
   if stat(30) then
@@ -29,7 +28,7 @@ function cute:t_kb(d,prompt,len)
   end
 
   f.input=i
-  f.cursor=#i+1
+  f.c=#i+1
  until btnp(⬇️)
 
  poke(24365,0)

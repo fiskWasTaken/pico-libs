@@ -15,9 +15,9 @@ end
 
 -- normalise a vector
 function vec.nor(x,y)
- local len=vec.len(x,y)
- if len>0 then
-  return x/len,y/len
+ l=vec.len(x,y)
+ if l>0 then
+  return x/l,y/l
  end
  return x,y
 end

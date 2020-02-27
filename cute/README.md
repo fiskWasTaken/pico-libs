@@ -45,8 +45,8 @@ It is expected you will want to swap out the views to style them according to yo
 
 ## extra stuff
 
-* `cute:on_step()` is a callback for each step forward in a cutscene.
-* `cute:on_progress()` is a callback for dialogue animation. You could use this to provide sound during message playback.
+* `cute:step()` is a callback for each step forward in a cutscene.
+* `cute:progress()` is a callback for dialogue animation. You could use this to provide sound during message playback.
 * `choice.lua` provides `cute:c()`, a function to provide a multiple-choice prompt.  
 * `text.lua` provides `cute:t()`, providing text input with cyclic control.  
 * `text_kb.lua` provides an experimental `cute:t_kb()` event handler for text. 

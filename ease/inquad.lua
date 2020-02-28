@@ -1,4 +1,4 @@
 function ease_inquad(t,b,c,d)
- t/=d
+ local t/=d
  return c*t*t+b
 end

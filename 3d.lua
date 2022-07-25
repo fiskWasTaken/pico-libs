@@ -36,7 +36,7 @@ local function proj(x,y,z)
 end
 
 -- screen to projected
-local function s2p(x,y,z)
+function s2p(x,y,z)
     local x,y,z=s2c(x,y,z)
     return proj(x,y,z)
 end

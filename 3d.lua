@@ -51,9 +51,8 @@ function sspr3d(sx,sy,sw,sh,x,y,z,w,h,fx,fy)
     local pw,ph=w*scale,h*scale
 
     -- sub pixel stuff
-    local x0,x1=flr(px),flr(px+pw)
-    local y0,y1=flr(py),flr(py+ph)
-    sspr2d(sx,sy,sw,sh,x0,y0,x1-x0,y1-y0,fx,fy)
+    local x0,y0=flr(px),flr(py)
+    sspr2d(sx,sy,sw,sh,x0,y0,flr(px+pw)-x0,flr(py+ph)-y0,fx,fy)
 end
 
 spr3d=function(n,x,y,z,w,h,fx,fy)
@@ -61,8 +60,7 @@ spr3d=function(n,x,y,z,w,h,fx,fy)
     -- convert to equivalent sspr() call
     w=(w or 1)*8
     h=(h or 1)*8
-    local sx,sy=flr(n%16)*8,flr(n/16)*8
-    sspr3d(sx,sy,w,h,x,y,z,w,h,fx,fy)
+    sspr3d(flr(n%16)*8,n\16*8,w,h,x,y,z,w,h,fx,fy)
 end 
 
 function map3d(cx,cy,x,y,z,w,h,lyr)
@@ -87,8 +85,7 @@ function map3d(cx,cy,x,y,z,w,h,lyr)
     end
 
     -- clamp
-    npy=min(npy,128)
-    fpy=max(fpy,0)
+    npy,fpy=min(npy,128),max(fpy)
 
     -- rasterise
     local py=flr(npy)

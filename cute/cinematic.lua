@@ -14,6 +14,7 @@ yield()
 end
 end
 
+-- these easing functions should be rewritten to take normalised params
 function eo(t,b,c,d)
 t/=d
 t-=1

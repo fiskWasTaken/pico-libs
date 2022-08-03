@@ -3,8 +3,7 @@ function cute:da(d,a)for m in all(a) do cute:d(d,m)end end
 function cute:d(d,m)
 local f={d=d,t='dialogue',⬇️=false,⧗=0}
 
-local row,prog,spd=1,0,0.4
-local lines=wrap(m,self.w)
+local row,prog,spd,lines=1,0,0.4,wrap(m,self.w)
 local trow=max(#lines-self.rows+2,2)
 
 repeat
@@ -16,7 +15,7 @@ f.m=sub(text,0,prog)
 self.f=f
 yield()
 
-if btnp(❎) then
+if btnp(🅾️) then
 if prog>=#text then
 row+=1
 prog=0
@@ -29,7 +28,7 @@ end
 end
 
 if prog<#text then
-mult=(btn(❎)) and 2 or 1
+mult=btn(🅾️) and 2 or 1
 prog+=spd*mult
 if (self.progress) self:progress()
 end

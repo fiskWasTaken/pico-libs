@@ -5,7 +5,6 @@
 -- if the first flag (0x1) is set on a block, it will have collision.
 
 function collision_block(x,y,r)
- w=w or 8
  return collision(x-r,y-r) or collision(x-r,y+r) or collision(x+r,y-r) or collision(x+r,y+r)
 end
 

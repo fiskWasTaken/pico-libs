@@ -1,6 +1,3 @@
--- seems to be in array function?
--- should return true if {int,int} is in {int,int}[]
-
 function in_path(points,point)
  for p in all(points) do
   if (point[1]==p[1] and point[2]==p[2]) return p
@@ -8,7 +5,7 @@ function in_path(points,point)
 end
 
 function len(x,y)
- return abs(x)*abs(y)
+ return x*x+y*y
 end
 
 function adjacent(x,y)
@@ -23,20 +20,23 @@ end
 function reconstruct_path(map,current)
  local out={}
  
- add(out,current)
+ repeat
+  add(out,current,1) 
+  current=map[current[1]..","..current[2]]
+ until current==nil
+
  return out
 end
 
--- example seems to use mget, I'm not sure why
--- idk what the func property is for but it does not seem to be for a heuristic
--- todo finish
--- oh. mget is probably to track what's walkable
 function astar(func,ax,ay,bx,by)
  local akey,o,c,gScore,fScore=ax..","..ay,{{ax,ay}},{},{},{} -- open,closed set
  gScore[akey],fScore[akey] = 0,len(bx-ax,by-ay)
-  
- while #o>0 do
-  printh(#o.." open, "..#c.." closed")
+ 
+ if func(bx,by) then
+  return {} -- path is impossible
+ end
+ 
+ while #o>0 and #c<255 do
   local lowest,current,nx,ny=0x7fff
 
   for on in all(o) do
@@ -47,28 +47,28 @@ function astar(func,ax,ay,bx,by)
    end
   end
 
-  printh("try node "..nx..","..ny)
-
   if nx==bx and ny==by then
    return reconstruct_path(c,current)
   end
 
   del(o,current)
   
-  for child in all(adjacent(nx,ny)) do
+  for child in all({
+    {nx+1,ny},
+    {nx-1,ny},
+    {nx,ny-1},
+    {nx,ny+1}
+   }) do
    local cx,cy=unpack(child)
-   local ckey=cx..","..cy
-   
-   printh("try child "..ckey)
 
-   local g=gScore[nx..","..ny] + len(nx-cx,ny-cy)
+   if not func(cx,cy) then
+    local ckey,g=cx..","..cy,gScore[nx..","..ny] + len(nx-cx,ny-cy)
 
-   if not gScore[ckey] or g < gScore[ckey] then
-    gScore[ckey],fScore[ckey]=g,g+len(bx-cx,by-cy)
-    c[ckey]=current
-
-    if not in_path(o,child) then
-     add(o,child)
+    if not gScore[ckey] or g < gScore[ckey] then
+     gScore[ckey],fScore[ckey]=g,g+len(bx-cx,by-cy)
+     c[ckey]=current
+  
+     if (not in_path(o,child)) add(o,child)
     end
    end
   end

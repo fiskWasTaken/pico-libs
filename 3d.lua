@@ -1,5 +1,4 @@
--- instant 3d+!
--- todo: breakup and modify again or find a copy of this somewhere.
+-- instant 3d+! modified for token count
 
 do
 -- parameters
@@ -16,9 +15,6 @@ map2d,spr2d,sspr2d,pset2d,camera2d=map,spr,sspr,pset,camera
 
 -- 3d camera position
 local cam={x=0,y=0,z=0}
-
--- is 3d mode enabled?
-is3d=false
 
 -- helper functions
 
@@ -55,7 +51,7 @@ function sspr3d(sx,sy,sw,sh,x,y,z,w,h,fx,fy)
     sspr2d(sx,sy,sw,sh,x0,y0,flr(px+pw)-x0,flr(py+ph)-y0,fx,fy)
 end
 
-spr3d=function(n,x,y,z,w,h,fx,fy)
+function spr3d(n,x,y,z,w,h,fx,fy)
     if(not z)return
     -- convert to equivalent sspr() call
     w=(w or 1)*8
@@ -146,43 +142,26 @@ function camera3d(x,y,z)
 end
 
 -- "instant 3d" wrapper functions
-local function icamera(x,y)
+function icamera(x,y)
     cam.x=(x or 0)+64
     cam.y=(y or 0)+128+p3d.camyoff
     cam.z=p3d.camheight
 end
 
-local function isspr(sx,sy,sw,sh,x,y,w,h,fx,fy)
+function isspr(sx,sy,sw,sh,x,y,w,h,fx,fy)
     z=h or sh
     y+=z
     sspr3d(sx,sy,sw,sh,x,y,z,w,h,fx,fy)
 end
 
-local function ispr(n,x,y,w,h,fx,fy)
+function ispr(n,x,y,w,h,fx,fy)
     z=(h or 1)*8
     y+=z
     spr3d(n,x,y,z,w,h,fx,fy)
 end
 
-local function imap(cx,cy,x,y,w,h,lyr)
-    cx=cx or 0
-    cy=cy or 0
-    x=x or 0
-    y=y or 0
-    w=w or 128
-    h=h or 64
-    map3d(cx,cy,x,y,0,w,h,lyr)
-end
-
-function go3d()
-    camera,sspr,spr,map=icamera,isspr,ispr,imap
-    camera2d()
-    is3d=true
-end
-
-function go2d()
-    map,spr,sspr,pset,camera=map2d,spr2d,sspr2d,pset2d,camera2d
-    is3d=false
+function imap(cx,cy,x,y,w,h,lyr)
+    map3d(cx or 0,cy or 0,x or 0,y or 0,0,w or 128,h or 64,lyr)
 end
 
 -- defaults

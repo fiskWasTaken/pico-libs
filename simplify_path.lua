@@ -1,6 +1,5 @@
 function simplify_path(path)
  local p_node,px,py,out=path[1],0,0,{}
- local out={}
 
  for node in all(path) do
   local dx,dy=node[1]-p_node[1],node[2]-p_node[2]

@@ -23,6 +23,9 @@ vec2mt={
    return vec2(self.x/v2.x,self.y/v2.y)
   end
  end,
+ __idiv=function(self,v2)
+  return vec2(self.x\v2,self.y\v2)
+ end,
  mag=function(self)
   local ax,ay=abs(self.x),abs(self.y)
   local d=max(ax,ay)
@@ -47,5 +50,5 @@ vec2mt.__index=vec2mt
 
 -- constructor
 function vec2(x,y)
-    return setmetatable({x=x,y=y},vec2mt)
+    return setmetatable({x=x or 0,y=y or 0},vec2mt)
 end

@@ -8,15 +8,6 @@ function len(x,y)
  return x*x+y*y
 end
 
-function adjacent(x,y)
- return {
-  {x+1,y},
-  {x-1,y},
-  {x,y-1},
-  {x,y+1}
- }
-end
-
 function reconstruct_path(map,current)
  local out={}
  
@@ -28,13 +19,12 @@ function reconstruct_path(map,current)
  return out
 end
 
-function astar(func,ax,ay,bx,by)
+function astar(is_wall,ax,ay,bx,by)
  local akey,o,c,gScore,fScore=ax..","..ay,{{ax,ay}},{},{},{} -- open,closed set
  gScore[akey],fScore[akey] = 0,len(bx-ax,by-ay)
  
- if func(bx,by) then
-  return {} -- path is impossible
- end
+ -- short circuit, impossible
+ if (is_wall(bx,by)) return {} 
  
  while #o>0 and #c<255 do
   local lowest,current,nx,ny=0x7fff
@@ -61,10 +51,10 @@ function astar(func,ax,ay,bx,by)
    }) do
    local cx,cy=unpack(child)
 
-   if not func(cx,cy) then
+   if not is_wall(cx,cy) then
     local ckey,g=cx..","..cy,gScore[nx..","..ny] + len(nx-cx,ny-cy)
 
-    if not gScore[ckey] or g < gScore[ckey] then
+    if g<(gScore[ckey] or 0x7fff) then
      gScore[ckey],fScore[ckey]=g,g+len(bx-cx,by-cy)
      c[ckey]=current
   

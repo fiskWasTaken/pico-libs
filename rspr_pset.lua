@@ -19,9 +19,7 @@ function rspr(sx,sy,x,y,a,w)
   for iy=0,w do
    if (srcx|srcy)&mask==0 then
     local c=sget(sx+srcx,sy+srcy)
-    if c!=0 then
-     pset(x+ix,y+iy,c)
-    end
+    if (c!=0) pset(x+ix,y+iy,c)
    end
    srcx-=ddy0
    srcy+=ddx0

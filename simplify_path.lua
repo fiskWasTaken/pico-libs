@@ -8,6 +8,5 @@ function simplify_path(path)
  end
 
  add(out,path[#path])
-	
  return out
 end

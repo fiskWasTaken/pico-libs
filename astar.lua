@@ -1,23 +1,8 @@
 function in_path(points,point)
- for p in all(points) do
-  if (point[1]==p[1] and point[2]==p[2]) return p
- end
+ for p in all(points) do if (point[1]==p[1] and point[2]==p[2]) return p end
 end
 
-function len(x,y)
- return x*x+y*y
-end
-
-function reconstruct_path(map,current)
- local out={}
- 
- repeat
-  add(out,current,1) 
-  current=map[current[1]..","..current[2]]
- until current==nil
-
- return out
-end
+function len(x,y) return x*x+y*y end
 
 function astar(is_wall,ax,ay,bx,by)
  local akey,o,c,gScore,fScore=ax..","..ay,{{ax,ay}},{},{},{} -- open,closed set
@@ -38,7 +23,14 @@ function astar(is_wall,ax,ay,bx,by)
   end
 
   if nx==bx and ny==by then
-   return reconstruct_path(c,current)
+   local o={}
+ 
+   repeat
+    add(o,current,1)  
+    current=c[current[1]..","..current[2]]
+   until not current
+
+   return o
   end
 
   del(o,current)

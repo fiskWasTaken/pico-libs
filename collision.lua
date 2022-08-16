@@ -10,19 +10,14 @@ local curr=points[i]
 local nxt=points[(i%#points)+1]
 
 -- perpl
-out[i]={
--(curr[2]-nxt[2]),
-curr[1]-nxt[1]
-}
+out[i]={-(curr[2]-nxt[2]),curr[1]-nxt[1]}
 end
 
 return out
 end
 
 -- get dot product for two vectors
-function dot(a,b)
-return a[1]*b[1]+a[2]*b[2]
-end
+function dot(a,b)return a[1]*b[1]+a[2]*b[2]end
 
 -- get projection for points
 function proj(axis, points)
@@ -43,33 +38,20 @@ return {mn,mx}
 end
 
 -- does vector a overlap vector b?
-function overlap(a,b)
-return a[2]>b[1] or a[1]>b[2]
-end
+function overlap(a,b)return a[2]>b[1] or a[1]>b[2]end
 
 -- find the overlap of vector a and vector b, assuming there is one
-function get_overlap(a,b)
-if a[2]>b[1] then
-return a[2]-b[1]
-else
-return b[2]-a[1]
-end
-end
+function get_overlap(a,b) return a[2]>b[1] and a[2]-b[1] or b[2]-a[1] end
 
 -- check collision between
 -- obj a and b
 function check(a,b)
-local a_offs=offset_points(a)
-local b_offs=offset_points(b)
-
-local mtv={0,0}
-local mtvlen=-1
-
+local a_offs,b_offs=offset_points(a),offset_points(b)
+local mtv,mtvlen={0,0},1
 local n=normals(a_offs)
 
 for i=1,#n do
-local p1=proj(n[i],a_offs)
-local p2=proj(n[i],b_offs)
+local p1,p2=proj(n[i],a_offs),proj(n[i],b_offs)
 
 if not overlap(p1,p2)then
 return false,mtv
@@ -85,8 +67,7 @@ end
 local n=normals(b_offs)
 
 for i=1,#n do
-local p1=proj(n[i],a_offs)
-local p2=proj(n[i],b_offs)
+local p1,p2=proj(n[i],a_offs),proj(n[i],b_offs)
 
 if not overlap(p1,p2)then
 return false,mtv

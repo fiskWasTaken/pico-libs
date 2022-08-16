@@ -2,7 +2,6 @@ function cute:da(d,a)for m in all(a) do cute:d(d,m)end end
 
 function cute:d(d,m)
 local f={d=d,t='dialogue',⬇️=false,⧗=0}
-
 local row,prog,spd,lines=1,0,0.4,wrap(m,self.w)
 local trow=max(#lines-self.rows+2,2)
 
@@ -39,17 +38,13 @@ end
 
 function slice(a,s,f)
 local o={}
-for i=s,f do
-add(o,a[i])
-end
+for i=s,f do add(o,a[i]) end
 return o
 end
 
 function join(s,d)
 local o=""
-for l in all(s) do
-o=o=="" and l or o..d..l
-end
+for l in all(s) do o=o=="" and l or o..d..l end
 return o
 end
 

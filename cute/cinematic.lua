@@ -26,6 +26,4 @@ end
 end
 
 -- convenience wrapper
-function cute:cm(label)
-cute:play(function() cm(label) end)
-end
+function cute:cm(label) cute:play(function() cm(label) end) end

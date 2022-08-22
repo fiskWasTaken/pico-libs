@@ -1,0 +1,1 @@
+function vec_from_angle(a)return {sin(a),cos(a)} end
